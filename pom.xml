@@ -2,7 +2,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jamesward</groupId>
-    <artifactId>spring_hibernate_hstore_bars</artifactId>
+    <artifactId>spring_hibernate_hstore_demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>

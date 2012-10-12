@@ -3,7 +3,16 @@
 
 ## Run Locally
 
-Build:
+Setup your PostgreSQL database to support hstore by opening a `psql` connection to it:
+
+    $ psql -U username -W -h localhost database
+
+Then enable hstore:
+
+    => create extension hstore;
+    => \q
+
+Build the app:
 
     $ mvn package
 
