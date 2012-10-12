@@ -37,7 +37,6 @@ public class ContactServiceImpl implements ContactService {
     public void addContactMethod(Integer contactId, String name, String value) {
         Contact contact = getContact(contactId);
         contact.contactMethods.put(name, value);
-        //em.merge(contact);
     }
     
 }

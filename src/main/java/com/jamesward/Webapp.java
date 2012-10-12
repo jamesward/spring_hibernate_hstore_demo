@@ -1,5 +1,8 @@
 package com.jamesward;
 
+import com.jamesward.config.DataConfig;
+import com.jamesward.config.RootConfig;
+import com.jamesward.config.WebConfig;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
