@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:rget/dependency/* com.jamesward.Webapp
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.jamesward.Webapp
