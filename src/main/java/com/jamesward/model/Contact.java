@@ -13,16 +13,17 @@ import java.util.Map;
 
 @Entity
 @TypeDef(name = "hstore", typeClass = HstoreUserType.class)
-public class Bar {
+public class Contact {
 
     @Id
     @GeneratedValue
     public Integer id;
 
+    @Column(nullable = false)
     public String name;
 
     @Type(type = "hstore")
     @Column(columnDefinition = "hstore")
-    public Map<String, String> features = new HashMap<String, String>();
+    public Map<String, String> contactMethods = new HashMap<String, String>();
 
 }

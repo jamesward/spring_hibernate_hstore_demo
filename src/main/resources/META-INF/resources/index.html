@@ -1,30 +1,104 @@
 <!doctype html>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Hibernate and PostgreSQL hstore Demo</title>
+    <title>Contacts</title>
 
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel='stylesheet' href='/webjars/bootstrap/2.1.1/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="/webjars/bootstrap/2.1.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="/webjars/jquery/1.8.2/jquery.min.js"></script>
+    
+    <style>
+        body {
+            margin-top: 50px;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        $(function() {
+            getContacts()
+        })
+        
+        
+        function getContacts() {
+            $.get("/api/contact", function(contacts) {
+                $("#contacts").empty()
+                $.each(contacts, function(index, contact) {
+                    var contactCard = $("<div>").addClass("well well-small")
+                    contactCard.append($("<h3>").css("margin-top", "0px").css("margin-bottom", "0px").text(contact.name))
+
+                    console.log(contact.contactMethods)
+                    var contactMethods = $("<div>")
+                    $.each(contact.contactMethods, function(name, value) {
+                        var contactMethodRow = $("<div>").css("margin-left", "15px")
+                        contactMethodRow.append($("<h5>").css("min-width", "210px").css("display", "inline-block").css("margin", "0px").text(name + ":"))
+                        contactMethodRow.append($("<span>").css("display", "inline").text(value))
+                        contactMethods.append(contactMethodRow)
+                    })
+                    
+                    contactCard.append(contactMethods)
+                    
+                    var newContactMethodForm = $("<form>").css("margin-left", "15px").submit(saveContactMethod)
+                    newContactMethodForm.append($("<input>").addClass("hidden").attr("type", "hidden").val(contact.id))
+                    newContactMethodForm.append($("<input>").addClass("name").attr("placeholder", "Name (e.g. Work Phone)")).attr("required", true)
+                    newContactMethodForm.append($("<input>").addClass("value").attr("placeholder", "Value (e.g. 303-555-1212)")).attr("required", true)
+                    newContactMethodForm.append($("<button>").addClass("btn btn-small").attr("type", "submit").text("Add Contact Method"))
+                    
+                    contactCard.append(newContactMethodForm)
+                    
+                    $("#contacts").append(contactCard)
+                })
+                
+                // add the new contact card
+                var newContactCard = $("<div>").addClass("well")
+                newContactCard.append($("<input>").attr("id", "newContactName").attr("placeholder", "New Contact").attr("required", true))
+                newContactCard.append($("<button>").addClass("btn btn-small").text("Save").click(saveContact))
+                $("#contacts").append(newContactCard)
+            })
+        }
+        
+        function saveContact(event) {
+            $.ajax({url: "/api/contact", type: "POST", contentType: "application/json", data: JSON.stringify({name: $("#newContactName").val()}), success: function(event) {
+                $("#newContactName").val("")
+                getContacts()
+            }})
+        }
+        
+        function saveContactMethod(event) {
+            event.preventDefault()
+            var contactId = $(event.currentTarget).children(".hidden").val()
+            var contactMethod = {}
+            contactMethod.name = $(event.currentTarget).children(".name").val()
+            contactMethod.value = $(event.currentTarget).children(".value").val()
+            
+            $.ajax({url: "/api/contact/" + contactId + "/contact-method", type: "POST", contentType: "application/json", data: JSON.stringify(contactMethod), success: function(event) {
+                // hacky: reset all of the contactMethod form inputs
+                $(".name").val("")
+                $(".value").val("")
+                getContacts()
+            }})
+        }
+    </script>
 </head>
 
 <body>
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="/" class="brand">Hibernate and PostgreSQL hstore Demo</a>
+            <a href="/" class="brand">Contacts</a>
         </div>
     </div>
 </div>
 
 <div class="container">
     
+    <div id="contacts">
+        
+    </div>
+    
 </div>
+
 </body>
 </html>

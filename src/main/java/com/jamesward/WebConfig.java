@@ -19,13 +19,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("redirect:index.html");
     }
-    
-    /*
-        <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-            <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-            <property name="prefix" value="/WEB-INF/jsp/" />
-            <property name="suffix" value=".jsp" />
-        </bean>
-     */
 
 }

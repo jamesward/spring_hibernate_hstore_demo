@@ -18,7 +18,7 @@ public class HstoreHelper {
         StringBuilder sb = new StringBuilder();
         int n = m.size();
         for (String key : m.keySet()) {
-            sb.append(key + K_V_SEPARATOR + m.get(key));
+            sb.append("\"" + key + "\"" + K_V_SEPARATOR + "\"" + m.get(key) + "\"");
             if (n > 1) {
                 sb.append(", ");
                 n--;
@@ -36,9 +36,9 @@ public class HstoreHelper {
         for (String token : tokens) {
             String[] kv = token.split(K_V_SEPARATOR);
             String k = kv[0];
-            k = k.trim().substring(1, k.length() - 2);
+            k = k.trim().substring(1, k.length() - 1);
             String v = kv[1];
-            v = v.trim().substring(1, v.length() - 2);
+            v = v.trim().substring(1, v.length() - 1);
             m.put(k, v);
         }
         return m;
